@@ -143,7 +143,7 @@ cat <<EOF> $CONFIG
     "discovery_filter": "${DISCOVERY_FILTER:-[IBEACON,GAEN,MS-CDP]}",
     "scanning_mode": "${SCANNING_MODE:-active}",
     "adapter": "${ADAPTER:-hci0}",
-    "time_sync": "${TIME_SYNC:-[]}"
+    "time_sync": "${TIME_SYNC:-[]}",
     "time_format": "${TIME_FORMAT:-0}"
 }
 EOF
