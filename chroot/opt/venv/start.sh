@@ -147,7 +147,7 @@ cat <<EOF> $CONFIG
     "presence_topic": "${MQTT_PRE_TOPIC:-home/presence/TheengsGateway}",
     "presence": ${PRESENCE:-false},
     "publish_all": ${PUBLISH_ALL:-true},
-	"publish_advdata": ${PUBLISH_ADVDATA:-false},
+    "publish_advdata": ${PUBLISH_ADVDATA:-false},
     "ble_scan_time": ${SCAN_TIME:-60},
     "ble_time_between_scans": ${TIME_BETWEEN:-60},
     "log_level": "${LOG_LEVEL:-DEBUG}",
