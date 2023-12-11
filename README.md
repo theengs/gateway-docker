@@ -96,6 +96,7 @@ You can use following command to run if you don't have docker compose plugin ins
 ```
 docker run --rm \
     --network host \
+    --privileged \
     -e MQTT_HOST=<host_ip> \
     -e MQTT_USERNAME=<username> \
     -e MQTT_PASSWORD=<password> \
@@ -127,6 +128,7 @@ And again, shorten it like this if you wish to use recommended defaults (without
 ```
 docker run --rm \
     --network host \
+    --privileged \
     -e MQTT_HOST=<host_ip> \
     -v /var/run/dbus:/var/run/dbus \
     --name gateway \
