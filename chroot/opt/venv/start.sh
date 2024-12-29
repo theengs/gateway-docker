@@ -4,68 +4,60 @@ CONFIG="$HOME/theengsgw.conf"
 
 # HOST: MQTT host address
 # Exit if MQTT host address not specified
-if [ -z "$HOST" ] && [ -z "$MQTT_HOST" ]; then
-    echo "HOST or MQTT_HOST is not defined. Missing MQTT host address, exiting"
+HOST=${HOST:-$MQTT_HOST}
+if [ -z "$HOST" ]; then
+    echo "HOST (or MQTT_HOST) is not defined. Missing MQTT host address, exiting"
     exit 1
 fi
 
 # PORT: MQTT host port
-if [ -n "$PORT" ] || [ -n "$MQTT_PORT" ]; then
+PORT=${PORT:-$MQTT_PORT}
+if [ -n "$PORT" ]; then
     # Use the value from PORT or MQTT_PORT, prefer PORT if both are set
-    port_value="${PORT:-$MQTT_PORT}"
-    if ! [[ $port_value =~ ^[0-9]+$ ]]; then
+    if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
         echo "WARNING : Wrong value for MQTT_PORT or PORT environment variable, will use default - 1883"
-        port_value=1883
+        PORT=1883
     fi
-    PORT=$port_value
 fi
 
 # USER: MQTT username
 # PASS: MQTT password
 # Exit if MQTT password is not specified. If either USER or MQTT_USERNAME is set...
-if [ -n "$USER" ] || [ -n "$MQTT_USERNAME" ]; then
+USER=${USER:-$MQTT_USERNAME}
+PASS=${PASS:-$MQTT_PASSWORD}
+if [ -n "$USER" ]; then
     # ...we must check for MQTT_PASSWORD or PASS too
-    if [ -z "$PASS" ] && [ -z "$MQTT_PASSWORD" ]; then
+    if [ -z "$PASS" ]; then
         echo "USER or MQTT_USERNAME specified without PASS or MQTT_PASSWORD, exiting"
         exit 1
     fi
 fi
 
 # BLE_SCAN_TIME: BLE scan duration (seconds)
-if [ -n "$BLE_SCAN_TIME" ] || [ -n "$SCAN_TIME" ]; then
-    scan_time="${BLE_SCAN_TIME:-$SCAN_TIME}"
-    if ! [[ "$scan_time" =~ ^[0-9]+$ ]]; then
+BLE_SCAN_TIME=${BLE_SCAN_TIME:-$SCAN_TIME} 
+if [ -n "$BLE_SCAN_TIME" ]; then
+    if ! [[ "$BLE_SCAN_TIME" =~ ^[0-9]+$ ]]; then
         echo "WARNING : Wrong value for BLE_SCAN_TIME or SCAN_TIME environment variable, will use default - 5"
-        scan_time=5
+        BLE_SCAN_TIME=5
     fi
-    BLE_SCAN_TIME=$scan_time
 fi
 
 # BLE_TIME_BETWEEN_SCANS: Seconds to wait between scans
-if [ -n "$TIME_BETWEEN" ] || [ -n "$BLE_TIME_BETWEEN_SCANS" ]; then
-    time_between="${BLE_TIME_BETWEEN_SCANS:-TIME_BETWEEN$}"
-    if ! [[ "$time_between" =~ ^[0-9]+$ ]]; then
+BLE_TIME_BETWEEN_SCANS=${BLE_TIME_BETWEEN_SCANS:-$TIME_BETWEEN}
+if [ -n "$BLE_TIME_BETWEEN_SCANS" ]; then
+    if ! [[ "$BLE_TIME_BETWEEN_SCANS" =~ ^[0-9]+$ ]]; then
         echo "WARNING : Wrong value for BLE_TIME_BETWEEN_SCANS or TIME_BETWEEN environment variable, will use default - 5"
-        time_between=5
+        BLE_TIME_BETWEEN_SCANS=5
     fi
-    BLE_TIME_BETWEEN_SCANS=$time_between
 fi
 
 # PUBLISH_TOPIC: MQTT publish topic
-if [ -n "$PUBLISH_TOPIC" ]; then
-    :   # This does nothing, just passes control forward
-elif [ -n "$MQTT_PUB_TOPIC" ]; then
-    PUBLISH_TOPIC="$MQTT_PUB_TOPIC"
-fi
+PUBLISH_TOPIC=${PUBLISH_TOPIC:-$MQTT_PUB_TOPIC}
 
 # LWT_TOPIC: MQTT LWT topic
 
 # SUBSCRIBE_TOPIC: MQTT subscribe topic
-if [ -n "$SUBSCRIBE_TOPIC" ]; then
-    :   # This does nothing, just passes control forward
-elif [ -n "$MQTT_SUB_TOPIC" ]; then
-    SUBSCRIBE_TOPIC="$MQTT_SUB_TOPIC"
-fi
+SUBSCRIBE_TOPIC="${SUBSCRIBE_TOPIC:-$MQTT_SUB_TOPIC}"
 
 # PRESENCE_TOPIC: MQTT presence topic
 
