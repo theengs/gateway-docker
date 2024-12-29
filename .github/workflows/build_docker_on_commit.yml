@@ -22,7 +22,7 @@ jobs:
     - name: Save Docker image
       run: docker save --output image.tar "${IMAGE_TAG}"
     - name: Upload Docker image
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3 # Updated to v3
       with:
         name: docker-image
         path: image.tar
