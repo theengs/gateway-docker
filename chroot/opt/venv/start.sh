@@ -203,7 +203,8 @@ echo "Creating config at $CONFIG ..."
     "ble": ${BLE:-true},
     "enable_tls": ${ENABLE_TLS:-false},
     "enable_websocket": ${ENABLE_WEBSOCKET:-false},
-    "whitelist": "${WHITELIST:-[]}"
+    "whitelist": "${WHITELIST:-[]}",
+    "blacklist": "${BLACKLIST:-[]}"
 EOF
     # Conditionally include IDENTITIES if not empty
     if [ -n "$IDENTITIES" ]; then
