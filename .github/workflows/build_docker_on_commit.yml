@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build --tag "${IMAGE_TAG}" .
     - name: Save Docker image
       run: docker save --output image.tar "${IMAGE_TAG}"
     - name: Upload Docker image
-      uses: actions/upload-artifact@v3 # Updated to v3
+      uses: actions/upload-artifact@v4 # Updated to v3
       with:
         name: docker-image
         path: image.tar
