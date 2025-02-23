@@ -202,9 +202,7 @@ echo "Creating config at $CONFIG ..."
     "time_format": "${TIME_FORMAT:-0}",
     "ble": ${BLE:-true},
     "enable_tls": ${ENABLE_TLS:-false},
-    "enable_websocket": ${ENABLE_WEBSOCKET:-false},
-    "whitelist": "${WHITELIST:-[]}",
-    "blacklist": "${BLACKLIST:-[]}"
+    "enable_websocket": ${ENABLE_WEBSOCKET:-false}
 EOF
     # Conditionally include IDENTITIES if not empty
     if [ -n "$IDENTITIES" ]; then
@@ -214,6 +212,16 @@ EOF
     # Conditionally include BINDKEYS if not empty
     if [ -n "$BINDKEYS" ]; then
         echo ",    \"bindkeys\": $BINDKEYS"
+    fi
+
+    # Conditionally include WHITELIST if not empty
+    if [ -n "$WHITELIST" ]; then
+        echo ",    \"whitelist\": $WHITELIST"
+    fi
+
+    # Conditionally include BLACKLIST if not empty
+    if [ -n "$BLACKLIST" ]; then
+        echo ",    \"blacklist\": $BLACKLIST"
     fi
 
     echo "}"

@@ -126,8 +126,8 @@ docker run --rm \
     -e BLE=true \
     -e IDENTITIES="{\"00:11:22:33:44:55:66\":\"0dc540f3025b474b9ef1085e051b1add\",\"AA:BB:CC:DD:EE:FF\":\"6385424e1b0341109942ad2a6bb42e58\"}" \
     -e BINDKEYS="{\"00:11:22:33:44:55:66\":\"0dc540f3025b474b9ef1085e051b1add\",\"AA:BB:CC:DD:EE:FF\":\"6385424e1b0341109942ad2a6bb42e58\"}" \
-    -e WHITELIST="[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]" \
-    -e BLACKLIST="[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]" \
+    -e WHITELIST='"[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"' \
+    -e BLACKLIST='"[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"' \
     -v /var/run/dbus:/var/run/dbus \
     --name theengsgateway \
     theengs/gateway-ARCH:latest
