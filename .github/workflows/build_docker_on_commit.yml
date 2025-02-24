@@ -10,20 +10,24 @@ env:
   IMAGE_TAG: "theengs/gateway:test"
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build --tag "${IMAGE_TAG}" .
-    - name: Save Docker image
-      run: docker save --output image.tar "${IMAGE_TAG}"
-    - name: Upload Docker image
-      uses: actions/upload-artifact@v4 # Updated to v3
-      with:
-        name: docker-image
-        path: image.tar
-        retention-days: 1
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build multi-arch Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6
+          push: false
+          outputs: "type=tar,dest=image.tar"
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: image.tar
+          retention-days: 1
