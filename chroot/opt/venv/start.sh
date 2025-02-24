@@ -19,27 +19,35 @@ hasvalue() {
 }
 
 # Exit if MQTT host not specified
-if isempty $MQTT_HOST; then
+HOST=${HOST:-$MQTT_HOST}
+if isempty $HOST; then
         echo "MQTT Host not defined, exiting"
         exit 1
 fi
 
 # If we enter username...
-if hasvalue $MQTT_USERNAME; then
+USER=${USER:-$MQTT_USERNAME}
+PASS=${PASS:-$MQTT_PASSWORD}
+if hasvalue $USER; then
 	# ...we must check for password too
-        if isempty $MQTT_PASSWORD; then
+        if isempty $PASS; then
                 echo "MQTT_USERNAME specified without MQTT_PASSWORD"
                 exit 1
         fi
 fi
 
 ### Syntax checks - START
-if hasvalue $MQTT_PORT; then
-	if ! [[ $MQTT_PORT =~ ^[0-9]+$ ]]; then
+PORT=${PORT:-$MQTT_PORT}
+if hasvalue $PORT; then
+	if ! [[ $PORT =~ ^[0-9]+$ ]]; then
 		echo "WARNING : Wrong value for MQTT_PORT environment variable, will use default - 1883"
-		MQTT_PORT=1883
+		PORT=1883
 	fi
 fi
+
+PUBLISH_TOPIC=${PUBLISH_TOPIC:-$MQTT_PUB_TOPIC}
+SUBSCRIBE_TOPIC=${SUBSCRIBE_TOPIC:-$MQTT_SUB_TOPIC}
+PRESENCE_TOPIC=${PRESENCE_TOPIC:-$MQTT_PRE_TOPIC}
 
 if hasvalue $PUBLISH_ALL; then
 	if ! [[ $PUBLISH_ALL =~ (true|false) ]]; then
@@ -76,17 +84,19 @@ if hasvalue $BLE; then
 	fi
 fi
 
-if hasvalue $SCAN_TIME; then
-	if ! [[ $SCAN_TIME =~ ^[0-9]+$ ]]; then
+BLE_SCAN_TIME=${BLE_SCAN_TIME:-$SCAN_TIME}
+if hasvalue $BLE_SCAN_TIME; then
+	if ! [[ $BLE_SCAN_TIME =~ ^[0-9]+$ ]]; then
 		echo "WARNING : Wrong value for SCAN_TIME environment variable, will use default - 60"
-		SCAN_TIME=60
+		BLE_SCAN_TIME=60
 	fi
 fi
 
-if hasvalue $TIME_BETWEEN; then
-	if ! [[ $TIME_BETWEEN =~ ^[0-9]+$ ]]; then
+BLE_TIME_BETWEEN_SCANS=${BLE_TIME_BETWEEN_SCANS:-$TIME_BETWEEN}
+if hasvalue $BLE_TIME_BETWEEN_SCANS; then
+	if ! [[ $BLE_TIME_BETWEEN_SCANS =~ ^[0-9]+$ ]]; then
 		echo "WARNING : Wrong value for TIME_BETWEEN environment variable, will use default - 60"
-		TIME_BETWEEN=60
+		BLE_TIME_BETWEEN_SCANS=60
 	fi
 fi
 
@@ -175,19 +185,19 @@ echo "Creating config at $CONFIG ..."
 {
     cat <<EOF
 {
-    "host": "$MQTT_HOST",
-    "pass": "$MQTT_PASSWORD",
-    "user": "$MQTT_USERNAME",
-    "port": ${MQTT_PORT:-1883},
-    "publish_topic": "${MQTT_PUB_TOPIC:-home/TheengsGateway/BTtoMQTT}",
-    "subscribe_topic": "${MQTT_SUB_TOPIC:-home/+/BTtoMQTT/undecoded}",
-    "presence_topic": "${MQTT_PRE_TOPIC:-home/presence/TheengsGateway}",
+    "host": "$HOST",
+    "pass": "PASS",
+    "user": "$USER",
+    "port": ${PORT:-1883},
+    "publish_topic": "${PUBLISH_TOPIC:-home/TheengsGateway/BTtoMQTT}",
+    "subscribe_topic": "${SUBSCRIBE_TOPIC:-home/+/BTtoMQTT/undecoded}",
+    "presence_topic": "${PRESENCE_TOPIC:-home/presence/TheengsGateway}",
     "presence": ${PRESENCE:-false},
     "general_presence": ${GENERAL_PRESENCE:-false},
     "publish_all": ${PUBLISH_ALL:-true},
     "publish_advdata": ${PUBLISH_ADVDATA:-false},
-    "ble_scan_time": ${SCAN_TIME:-60},
-    "ble_time_between_scans": ${TIME_BETWEEN:-60},
+    "ble_scan_time": ${BLE_SCAN_TIME:-60},
+    "ble_time_between_scans": ${BLE_TIME_BETWEEN_SCANS:-60},
     "tracker_timeout": ${TRACKER_TIMEOUT:-120},
     "log_level": "${LOG_LEVEL:-DEBUG}",
     "lwt_topic": "${LWT_TOPIC:-home/TheengsGateway/LWT}",
