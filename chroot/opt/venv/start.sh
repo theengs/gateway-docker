@@ -104,6 +104,20 @@ if hasvalue $LOG_LEVEL; then
 	fi
 fi
 
+if hasvalue $IGNORE_WBLIST; then
+    if ! [[ $IGNORE_WBLIST =~ (true|false) ]]; then
+        echo "WARNING : Wrong value for IGNORE_WBLIST environment variable, will use default - false"
+        IGNORE_WBLIST=false
+    fi
+fi
+
+if hasvalue $CA_FILE; then
+    if ! [ -f "$CA_FILE" ]; then
+        echo "WARNING : CA_FILE path '$CA_FILE' does not exist. TLS validation may fail."
+    fi
+fi
+
+
 if hasvalue $DISCOVERY; then
 	if ! [[ $DISCOVERY =~ (true|false) ]]; then
 		echo "WARNING : Wrong value for DISCOVERY environment variable, will use default - true"
@@ -202,7 +216,9 @@ echo "Creating config at $CONFIG ..."
     "time_format": "${TIME_FORMAT:-0}",
     "ble": ${BLE:-true},
     "enable_tls": ${ENABLE_TLS:-false},
-    "enable_websocket": ${ENABLE_WEBSOCKET:-false}
+    "enable_websocket": ${ENABLE_WEBSOCKET:-false},
+    "ignore_wblist": ${IGNORE_WBLIST:-false},
+    "ca_file": "${CA_FILE:-}"
 EOF
     # Conditionally include IDENTITIES if not empty
     if [ -n "$IDENTITIES" ]; then

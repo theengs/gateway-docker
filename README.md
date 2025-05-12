@@ -61,9 +61,12 @@ services:
       IDENTITIES: "[]"
       WHITELIST: "[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"
       BLACKLIST: "[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"
+      IGNORE_WBLIST: false
+      CA_FILE: /etc/ssl/certs/ca.crt
 
     volumes:
       - /var/run/dbus:/var/run/dbus
+      - ./certs/ca.crt:/etc/ssl/certs/ca.crt:ro
 ```
 
 *MQTT_HOST* is mandatory field, ofcourse.
@@ -119,7 +122,7 @@ docker run --rm \
     -e DISCOVERY_TOPIC=homeassistant \
     -e DISCOVERY_DEVICE_NAME=TheengsGateway \
     -e DISCOVERY_FILTER="[IBEACON]" \
-    -e SCANNING_MODE=active
+    -e SCANNING_MODE=active \
     -e ADAPTER=hci0 \
     -e TIME_SYNC="[]" \
     -e TIME_FORMAT=0 \
@@ -128,7 +131,10 @@ docker run --rm \
     -e BINDKEYS="{\"00:11:22:33:44:55:66\":\"0dc540f3025b474b9ef1085e051b1add\",\"AA:BB:CC:DD:EE:FF\":\"6385424e1b0341109942ad2a6bb42e58\"}" \
     -e WHITELIST='"[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"' \
     -e BLACKLIST='"[11:22:33:44:55:66,AA:BB:CC:DD:EE:FF]"' \
+    -e IGNORE_WBLIST=false \
+    -e CA_FILE="/etc/ssl/certs/ca.crt" \
     -v /var/run/dbus:/var/run/dbus \
+    -v ./certs/ca.crt:/etc/ssl/certs/ca.crt:ro \
     --name theengsgateway \
     theengs/gateway-ARCH:latest
 ```
