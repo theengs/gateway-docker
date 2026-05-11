@@ -160,6 +160,26 @@ if hasvalue $ENABLE_TLS; then
 	fi
 fi
 
+if hasvalue $TLS_INSECURE; then
+	if ! [[ $TLS_INSECURE =~ (true|false) ]]; then
+		echo "WARNING : Wrong value for TLS_INSECURE environment variable, will use default - false"
+		TLS_INSECURE=false
+	fi
+fi
+
+if hasvalue $CA_FILE; then
+	if ! [ -f "$CA_FILE" ]; then
+		echo "WARNING : CA_FILE path '$CA_FILE' does not exist. TLS validation will fail."
+	fi
+fi
+
+if hasvalue $IGNORE_WBLIST; then
+	if ! [[ $IGNORE_WBLIST =~ (true|false) ]]; then
+		echo "WARNING : Wrong value for IGNORE_WBLIST environment variable, will use default - false"
+		IGNORE_WBLIST=false
+	fi
+fi
+
 if hasvalue $ENABLE_WEBSOCKET; then
 	if ! [[ $ENABLE_WEBSOCKET =~ (true|false) ]]; then
 		echo "WARNING : Wrong value for ENABLE_WEBSOCKET environment variable, will use default - false"
@@ -202,8 +222,15 @@ echo "Creating config at $CONFIG ..."
     "time_format": "${TIME_FORMAT:-0}",
     "ble": ${BLE:-true},
     "enable_tls": ${ENABLE_TLS:-false},
+    "tls_insecure": ${TLS_INSECURE:-false},
+    "ignore_wblist": ${IGNORE_WBLIST:-false},
     "enable_websocket": ${ENABLE_WEBSOCKET:-false}
 EOF
+    # Conditionally include CA_FILE only when set, mapped to ca_certs (the key TheengsGateway reads)
+    if [ -n "$CA_FILE" ]; then
+        echo ",    \"ca_certs\": \"$CA_FILE\""
+    fi
+
     # Conditionally include IDENTITIES if not empty
     if [ -n "$IDENTITIES" ]; then
         echo ",    \"identities\": $IDENTITIES"

@@ -33,6 +33,9 @@ services:
       IDENTITIES: "{}"
       WHITELIST: "[]"
       BLACKLIST: "[]"
-
+      IGNORE_WBLIST: false
+      CA_FILE: "/etc/ssl/certs/ca.crt"
+      TLS_INSECURE: false
     volumes:
       - /var/run/dbus:/var/run/dbus
+      - ./certs/ca.crt:/etc/ssl/certs/ca.crt:ro
