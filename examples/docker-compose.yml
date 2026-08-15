@@ -24,6 +24,7 @@ services:
       DISCOVERY_TOPIC: homeassistant
       DISCOVERY_DEVICE_NAME: TheengsGateway
       DISCOVERY_FILTER: "[IBEACON]"
+      DISCOVERY_DIAGNOSTIC: true
       SCANNING_MODE: active
       ADAPTER: hci0
       BINDKEYS: "{}"

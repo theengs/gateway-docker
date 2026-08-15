@@ -51,6 +51,7 @@ services:
       DISCOVERY_TOPIC: homeassistant
       DISCOVERY_DEVICE_NAME: TheengsGateway
       DISCOVERY_FILTER: "[IBEACON,GAEN,MS-CDP]"
+      DISCOVERY_DIAGNOSTIC: true
       SCANNING_MODE: active
       ADAPTER: hci0
       TIME_SYNC: "[]"
@@ -123,6 +124,7 @@ docker run --rm \
     -e DISCOVERY_TOPIC=homeassistant \
     -e DISCOVERY_DEVICE_NAME=TheengsGateway \
     -e DISCOVERY_FILTER="[IBEACON]" \
+    -e DISCOVERY_DIAGNOSTIC=true \
     -e SCANNING_MODE=active \
     -e ADAPTER=hci0 \
     -e TIME_SYNC="[]" \
