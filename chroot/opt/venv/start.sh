@@ -254,7 +254,7 @@ EOF
     echo "}"
 } > $CONFIG
 
-cat $CONFIG
+sed 's/"pass": "[^"]*"/"pass": "***"/' "$CONFIG"
 
 
 python3 -m TheengsGateway $PARAMS
