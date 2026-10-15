@@ -118,6 +118,13 @@ if hasvalue $HASS_DISCOVERY; then
 	fi
 fi
 
+if hasvalue $DISCOVERY_DIAGNOSTIC; then
+	if ! [[ $DISCOVERY_DIAGNOSTIC =~ (true|false) ]]; then
+		echo "WARNING : Wrong value for DISCOVERY_DIAGNOSTIC environment variable, will use default - false"
+		DISCOVERY_DIAGNOSTIC=false
+	fi
+fi
+
 if hasvalue $PASSIVE_SCAN; then
 	# Deprecation warning, this was written before 0.5.0 was released , will use SCANNIN_MODE in future
 	echo "PASSIVE_SCAN : Deprecated environment variable, this variable will be removed in future versions, please use SCANNING_MODE=active|passive"
@@ -216,6 +223,7 @@ echo "Creating config at $CONFIG ..."
     "discovery_topic": "${DISCOVERY_TOPIC:-homeassistant/sensor}",
     "discovery_device_name": "${DISCOVERY_DEVICE_NAME:-TheengsGateway}",
     "discovery_filter": "${DISCOVERY_FILTER:-[IBEACON]}",
+    "discovery_diagnostic": ${DISCOVERY_DIAGNOSTIC:-false},
     "scanning_mode": "${SCANNING_MODE:-active}",
     "adapter": "${ADAPTER:-hci0}",
     "time_sync": "${TIME_SYNC:-[]}",
